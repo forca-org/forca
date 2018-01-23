@@ -1,8 +1,0 @@
-ForCA - wsgi version
-
-Instalação:
-
-1 - Crie o banco (preferencialmente postgresql)
-2 - Edite o arquivo applications/ForCA/models/0_settings.py
-    a partir do default, com os dados da conexao e demais preferencias
-3 - Rode (como sudo) o script forca-setup.sh
