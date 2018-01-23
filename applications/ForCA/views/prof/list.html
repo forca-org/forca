@@ -1,0 +1,43 @@
+{{extend 'layout.html'}}
+<h1>Professores</h1>
+{{if auth.has_membership('Admin'):}}
+    {{=A(H3('Criar novo professor'), _href='create')}}
+{{pass}}
+<table>
+	<tr>
+        <th>Nome</th>
+        <th>Cadastrado?</th>
+        <th>Avaliações</th>
+        <th>Média</th>
+        {{if auth.has_membership('Admin'):}}
+            <th>Admin</th>
+        {{pass}}
+	</tr>
+	{{for i, prof in enumerate(profs):}}
+    <tr class={{='warning' if prof.blocked else ['even', 'odd'][i % 2]}}>
+        <td>{{=prof.full_name if prof.blocked else A(prof.full_name, _href=URL('home', vars=dict(prof_id=prof.id)))}}</td>
+        {{if prof.blocked:}}
+            <td colspan=3 style="text-align: center">
+                <b>Perfil bloqueado</b>
+                {{=IMG(_src=URL('static', 'question.png'), _title="O professor solicitou o bloqueio de seu perfil")}}
+            </td>
+        {{else:}}
+            <td style="text-align:center;">
+                {{if prof.user_id:}}
+                    {{=IMG(_src=URL('static', 'tick.png'))}}
+                {{pass}}
+            </td>
+            <td style="text-align:right;">{{=get_evals(prof.id,None).count()}}</td>
+            <td style="text-align:center;"><b>{{=prof.grade or '-'}}</b></td>
+        {{pass}}
+        {{if auth.has_membership('Admin'):}}
+            <td>
+                {{=A(IMG(_src=URL('static','pencil.png'), _title="Editar"), _href=URL('prof','edit', vars=dict(prof_id=prof.id)))}}
+                {{=A(IMG(_src=URL('static','cross.png'), _title="Excluir"), _href=URL('prof','delete', vars=dict(prof_id=prof.id)),
+                  _onclick="return confirm('Tem certeza de que deseja excluir o professor?');")}}
+            </td>
+        {{pass}}
+	</tr>
+	{{pass}}
+</table>
+

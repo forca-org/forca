@@ -1,0 +1,48 @@
+{{extend 'layout.html'}}
+
+{{=H1('Admin')}}
+
+<div name="last_registered">
+    <h2>Últimos usuários registrados</h2>
+    <ul>
+        {{for user in users:}}
+            <li><b>{{=user['name']}}</b> ({{=user['email']}})</li>
+        {{pass}}
+    </ul>
+</div>
+<br/>
+<div name="last_registered">
+    <h2>Últimos usuários logados</h2>
+    <ul>
+        {{for user in logged:}}
+            <li><b>{{=user['name']}}</b> ({{=user['email']}}) - <i>{{=user['time']}}</i></li>
+        {{pass}}
+    </ul>
+</div>
+<br/>
+<div name="last_replied">
+    <h2>Últimas avaliações respondidas</h2>
+    <ul>
+        {{for eval in replied:}}
+            <li>
+                <a href="../prof/home?prof_id={{=eval['professor_id']}}">
+                    <b>{{=Professores[eval['professor_id']]['full_name']}}</b>
+                </a>
+                para
+                <b>{{=(Alunos[eval['aluno_id']]['full_name'] if not eval['anonimo'] else "Anônimo")}}</b>
+                por
+                <br/>
+                <small>{{=eval['comment']}}</small>
+                <br/>
+                <small><b>{{=eval['reply']}}</b></small>
+            </li>
+            <br/>
+        {{pass}}
+    </ul>
+</div>
+<div name="evals_stats">
+    <h2>Estatísticas de avaliações</h2>
+    <img src="{{=chart_url}}"/>
+</div>
+
+{{pass}}
